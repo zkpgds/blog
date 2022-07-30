@@ -215,6 +215,7 @@ def generate_rss_feed(repo, filename, me):
 def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     print("===============")
     print(token)
+    print(repo_name)
     user = login(token)
     me = get_me(user)
     repo = get_repo(user, repo_name)
