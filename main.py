@@ -7,17 +7,17 @@ from github import Github
 from feedgen.feed import FeedGenerator
 from lxml.etree import CDATA
 
-MD_HEAD = """**<p align="center">[Leeyom's Blog](https://blog.leeyom.top)</p>**
+MD_HEAD = """**<p align="center">[Zkp's Blog](https://zkpgds.github.io)</p>**
 ====
 
 **<p align="center">用于记录一些幼稚的想法和脑残的瞬间</p>**
-[![](https://raw.githubusercontent.com/superleeyom/blog/main/img/IMG_216.JPEG)](https://blog.leeyom.top)
+[![](https://raw.githubusercontent.com/superleeyom/blog/main/img/IMG_216.JPEG)](https://zkpgds.github.io)
 
 ## 联系方式
-- Twitter：[@super_leeyom](https://twitter.com/super_leeyom)
-- Telegram：[@super_leeyom](https://t.me/super_leeyom)
-- Email：[leeyomwang@163.com](mailto:leeyomwang@163.com)
-- Blog：[https://blog.leeyom.top](https://blog.leeyom.top)
+- Twitter：[@zkpgds](https://twitter.com/zkpgds)
+- Telegram：[@zkpgds](https://t.me/zkpgds)
+- Email：[zkpgds@163.com](mailto:zkpgds@163.com)
+- Blog：[https://zkpgds.github.io](https://zkpgds.github.io)
 - RSS：[RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
 
