@@ -11,7 +11,7 @@ MD_HEAD = """**<p align="center">[Zkp's Blog](https://zkpgds.github.io)</p>**
 ====
 
 **<p align="center">用于记录一些幼稚的想法和脑残的瞬间</p>**
-[![](https://raw.githubusercontent.com/superleeyom/blog/main/img/IMG_216.JPEG)](https://zkpgds.github.io)
+[![](https://raw.githubusercontent.com/zkpgds/blog/main/img/IMG_216.JPEG)](https://zkpgds.github.io)
 
 ## 联系方式
 - Twitter：[@zkpgds](https://twitter.com/zkpgds)
@@ -213,6 +213,8 @@ def generate_rss_feed(repo, filename, me):
 
 
 def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
+    print("===============")
+    print(token)
     user = login(token)
     me = get_me(user)
     repo = get_repo(user, repo_name)
