@@ -10,10 +10,4 @@
 - Email：[zkpgds@163.com](mailto:zkpgds@163.com)
 - Blog：[https://zkpgds.github.io](https://zkpgds.github.io)
 - RSS：[RSS Feed](https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml)
-## 置顶文章
-- [Test](https://github.com/zkpgds/blog/issues/2)--2022-07-30
 ## 最近更新
-- [Nginx](https://github.com/zkpgds/blog/issues/3)--2022-07-30
-- [Test](https://github.com/zkpgds/blog/issues/2)--2022-07-30
-## 技术相关
-- [Nginx](https://github.com/zkpgds/blog/issues/3)--2022-07-30
