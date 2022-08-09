@@ -11,6 +11,7 @@
 - Blog：[https://zkpgds.github.io](https://zkpgds.github.io)
 - RSS：[RSS Feed](https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml)
 ## 最近更新
+- [安全运维规范](https://github.com/zkpgds/blog/issues/6)--2022-08-09
 - [git 使用规范](https://github.com/zkpgds/blog/issues/5)--2022-08-09
 - [博客终于弄好了~~~](https://github.com/zkpgds/blog/issues/4)--2022-08-03
 ## 技术相关

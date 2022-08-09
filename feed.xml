@@ -1,5 +1,118 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-09T07:06:17.061698+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-09T07:06:17.222863+00:00</updated><content type="html"><![CDATA[<h1>Git 规范</h1>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-09T07:19:29.792610+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/6</id><title>安全运维规范</title><updated>2022-08-09T07:19:30.016493+00:00</updated><content type="html"><![CDATA[<p>=简介=
+为了保证生产系统运维工作安全高效的开展，特制定此安全运维规范，以便明确运维职责，标准化运维相关工作，统一运维操作，收敛运维风险敞口，降低安全风险，提高运维工作效率和质量。</p>
+<p>=通用规范=</p>
+<ul>
+<li>生产网安全需遵守生产网安全规范</li>
+<li>所有代码管理必须遵循集团代码分级管理规范  //<strong>参见 [[http://phabricator.huobidev.com/w/dev-rule/%E4%BB%A3%E7%A0%81%E5%88%86%E7%BA%A7/ | 代码分级]]</strong>//</li>
+<li>研发流程与集团研发流程保持一致，采用集团统一的构建、发布系统</li>
+<li>研发设计与数据库设计符合集团研发相应的设计规范 <strong>//参见 [[ /w/dba/regulation/db_specification/ | 数据库设计规范 ]]//</strong></li>
+<li>日志符合集团研发规范 <strong>//参见 [[ /w/devops/%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1/ | 日志规范 ]]//</strong></li>
+<li>应用规范 //<strong>参见 [[/w/devops/应用部署维护规范/| 应用部署规范]]</strong>//</li>
+<li>容器化应用申请规范 //<strong>参见 [[/w/devops/application_apply_template/| 容器化应用部署申请规范]]</strong>//</li>
+</ul>
+<p>=生产机器=</p>
+<ul>
+<li>机器的申请需要遵循资源申请流程 //<strong>参见 [[http://phabricator.huobidev.com/w/%E7%BB%84%E7%BB%87%E8%B5%84%E4%BA%A7/%E7%BB%84%E7%BB%87%E8%B5%84%E4%BA%A7/%E7%BB%84%E7%BB%87%E7%BA%A7%E6%A0%87%E5%87%86%E8%BF%87%E7%A8%8B/%E9%A1%B9%E7%9B%AE/%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86%E9%83%A8%E9%97%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/ | 运维资源申请规程 ]]//</strong>，由运维团队通过初始化脚本或配置管理工具进行统一初始化  </li>
+<li>除运维团队相关负责人员外，其他任何人员不允许接触和拥有生产机器的登录信息（用户名/密码、私钥文件）</li>
+<li>除运维团队相关负责人员外，任何其他人员不允许直接或间接登录生产机器，运维人员登录时必须使用指定的双因素认证，目前采用 Yubikey</li>
+<li>登录生产机器后不允许修改配置、代码等，防止影响线上系统或造成环境潜在不一致</li>
+<li>生产机器需要添加安全审计、入侵检测工具，如 AuditBeat、OSSEC</li>
+<li>访问生产机器的密码和密钥符合生产网安全规范，禁止出现弱密码</li>
+<li>所有的基础服务，能设置密码的必须设置密码，不能设置密码的（如 Redis）需要报备安全</li>
+<li>整个公司采用一致的服务器操作系统版本，服务器软件禁止开启自动更新，操作系统版本的升级按公司整体进行</li>
+<li>系统设备的管理人员转岗或离职，必须立即注销该账号的所有权限，并移交所 有设备资产</li>
+</ul>
+<p>=生产数据库=</p>
+<ul>
+<li>数据库的申请需要遵循资源申请流程，由运维团队通过初始化脚本或配置管理工具进行统一初始化  </li>
+<li>除运维人员在发生问题进行调查外，任何人不能直接登录数据库所在的服务器</li>
+<li>只有负责维护的 DBA 才能拥有所维护数据库的配置管理和数据读写权限</li>
+<li>生产库的读权限仅在必要时（如调查问题）才开放给相关研发人员，权限的申请需要经过数据库权限申请流程，权限赋予时考虑使用时间，使用后及时收回</li>
+<li>如果有线上数据库查询平台类工具，可以开放给相关研发人员长期读权限，权限的申请需要经过平台权限申请流程，但平台需要对敏感库表进行脱敏处理，防止数据泄露</li>
+<li>生产库需要建立白名单机制，仅对指定机器或人员开放</li>
+<li>DBA须通过堡垒机访问数据库，确保可记录、审计操作数据库行为。</li>
+<li>禁止直接操作线上数据库数据。若特殊原因，线上数据的变更必须通过数据变更申请流程，需要研发负责人和运维负责人进行批准，涉及敏感数据（机密、秘密）时需要对应业务和安全介入批准</li>
+<li>访问数据库的密码和密钥符合生产网安全规范，禁止出现弱密码</li>
+</ul>
+<p>=监控与告警=</p>
+<ul>
+<li>所有线上设备需要建立全面的基础资源监控，包括但不限于 CPU、内存、磁盘、IO、流量，并建立相应报警</li>
+<li>数据库需要监控 TPS、QPS 和慢查询等，并建立相应报警</li>
+<li>所有线上设备需要监控登录记录、非法访问，一经发现及时报警</li>
+<li>应用系统对可用性和性能进行监控，并建立相应报警</li>
+<li>需要监控系统的关键业务指标，并建立相应报警</li>
+<li>建议使用 Zabbix+Datadog+PagerDuty 的监控告警方式</li>
+</ul>
+<p>=轮值报障=</p>
+<ul>
+<li>遵循集团的线上运维报障流程，建立 7x24 的轮值机制 //<strong>参见 [[/w/devops/on-call/|运维值班规范]]</strong>//</li>
+<li>所有事故需要建立事故报告，B 级以上事故需要进行 COE //<strong>参见 [[/w/devops/accident_levels/|故障分级标准]]</strong>//</li>
+<li>定期进行线上问题分析，持续提高系统质量和稳定性，持续改善运维效率 //<strong>参见  [[/w/事故处理/|事故处理规范]]</strong>//</li>
+</ul>
+<p>=资源管理=</p>
+<ul>
+<li>维护资源清单，定期进行资源使用情况分析，从安全和成本的角度定期复查，确定优化方案</li>
+</ul>
+<p>=高可用=</p>
+<ul>
+<li>保障业务服务的高可用，在多可用区做 HA 部署，避免业务服务单点</li>
+</ul>
+<p>=数据备份=</p>
+<ul>
+<li>建立多重备份机制：常规备份、全量备份、快照、S3备份</li>
+<li>定期检查备份文件是否可用、完整，避免出故障后备份数据不可用</li>
+</ul>
+<p>=安全=</p>
+<ul>
+<li>运维人员办公需遵循集团办公网安全要求</li>
+<li>资产清单、Cloudflare 防护策略需同步安全部</li>
+<li>建立运维与安全应急响应协作机制，定期演练事故场景</li>
+<li>定期对服务器进行漏洞安全扫描</li>
+<li>不得自创加密算法，使用标准的加密算法</li>
+<li>统一日志收集与分析，需同步安全部</li>
+</ul>
+<p>=定期检查=</p>
+<ul>
+<li>定期对基础设施进行检查</li>
+<li>监控域名的过期时间</li>
+<li>及时更新证书，防止过期</li>
+<li>对使用到的第三方产品、服务的安全性进行检查</li>
+</ul>
+<p>=谨慎操作=</p>
+<ul>
+<li>在处理需求和故障时，执行风险命令（如 rm、restart、reboot 等）需再三确认，执行命令前，仔细检查所在服务器、路径</li>
+<li>避免在疲劳、不清醒状态下操作服务器，尤其是数据库，出错几率较大</li>
+<li>在处理事故时，要考虑处理措施是否会引发连锁故障，重要操作三思而行</li>
+</ul>
+<p>=事故分析=</p>
+<ul>
+<li>在事故分析时，践行无指责文化，重在定位原因，制定改进措施</li>
+</ul>
+<p>=持续学习=</p>
+<ul>
+<li>DevOpsSec 是知识不断变化的领域，需保持对新技术、安全漏洞、最佳实践的关注</li>
+</ul>
+<p>=审批=</p>
+<ul>
+<li>业务系统日常运维权限的变更不需要经过安全审批</li>
+<li>涉及运营数据的操作，经主管负责人审批后,</li>
+<li>
+涉及如下操作，需经过安全部审批<ul>
+<li>直接修改线上数据库的操作</li>
+<li>涉及核心数据（用户数据、资产数据）的操作</li>
+<li>涉及敏感代码的操作</li>
+</ul>
+</li>
+</ul>
+<p>=变更记录=
+| <strong>文档版本</strong> | V0.1
+| <strong>制定部门</strong> | 集团运维
+| <strong>审核人</strong>|
+| <strong>变更说明</strong>| 2019-01-1-11，安全与运维讨论创建|</p>
+<p>=参考资料=
+{F780080}</p>
+]]></content><link href="https://github.com/zkpgds/blog/issues/6" rel="alternate"/><published>2022-08-09T07:17:31+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-09T07:19:30.161383+00:00</updated><content type="html"><![CDATA[<h1>Git 规范</h1>
 <h2>git分支策略</h2>
 <p><img src="https://user-images.githubusercontent.com/3361961/183578049-255fb33f-c4e2-44fa-865c-295fb91ecc96.png" alt="image" /></p>
 <h2>Git 开发流程规范（试用版）</h2>
@@ -288,5 +401,5 @@ revert: 回滚到上一个版本</p>
 <p>更新代码后，再次运行<code>arc diff</code>，可以将diff进行更新。</p>
 <h3>5.4developer上传代码</h3>
 <p>注意，运行的命令是<code>arc land</code>，不是<code>git push</code>。</p>
-]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><category term="技术相关"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-09T07:06:17.351296+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
+]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><category term="技术相关"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-09T07:19:30.314868+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
 ]]></content><link href="https://github.com/zkpgds/blog/issues/4" rel="alternate"/><category term="日记"/><published>2022-08-03T13:12:04+00:00</published></entry></feed>
