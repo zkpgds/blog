@@ -1,5 +1,6 @@
 # [git 使用规范](https://github.com/zkpgds/blog/issues/5)
 
+# Git 规范
 ## git分支策略
 ![image](https://user-images.githubusercontent.com/3361961/183578049-255fb33f-c4e2-44fa-865c-295fb91ecc96.png)
 
@@ -139,3 +140,211 @@ git flow release track RELEASE_VERSION
 ## 参考文档
 [Git Flow Cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html)
 [Git Flow 使用笔记](http://fann.im/blog/2012/03/12/git-flow-notes/)
+
+-------------------------------------------------------第二部分------------------------------------------------------------
+# 一些git 命令
+- 安装arc(不要使用中文)
+- 创建远程分支 FEATURE_Txxxx (默认基于 master)
+`git push origin master:FEATURE_T1234`
+- checkout 远程分支 FEATURE_Txxxx（不要在该分支上直接 commit）
+ `git checkout --track origin/FEATURE_T1234`
+- checkout 本地开发分支 Txxxx
+`arc feature T1234 // git checkout -b T1234 FEATURE_T1234`
+
+> 不要直接在远程分支上提交代码，使用本地分支 commit & diff
+
+-  在开发分支上提交代码并提审
+`git commit -m 'T1234 .... '
+   arc diff HEAD^                        // 根据实际情况选择 commit id，默认是 parent`
+
+> commit message 以任务号开头，填具体修改内容摘要
+一个 task 可对应多个commit，不需要重复填写任务标题
+
+- 根据审核意见修改代码后，更新diff
+`git commit --amend
+arc diff --update Dxxxxx`
+
+- 审核代码通过后，将代码发布到远程分支
+`arc land --onto FEATURE_T1234`
+
+- 打RC tag
+`git tag RC_T1234
+git push origin RC_T1234`
+- 测试过程中修复 bug，重复上述流程
+`git checkout -b T1235 FEATURE_T1234    // 使用BUG任务号
+git commit -m 'T1235 .... '
+arc diff HEAD^`
+- 如果此处有update，要使用如下方法：
+`git commit --amend
+arc diff HEAD^`
+- 如果已经accepted，需要land：
+`arc land --onto FEATURE_T1234
+git tag RC_T1234_2
+git push origin RC_T1234_2`
+
+> 使用BUG任务号提交 bugfix 作为关联，方便查看bug的修复方式
+
+- 测试通过后, 合并 master 分支上的最新 PRD 标签
+`git checkout FEATURE_T1234
+git pull                     // 确认与远端同步
+git log origin/master        // 确认最新的 PRD_Txxxx 标签
+git merge PRD_Txxxx          // 使用标签而不是分支
+git merge --continue
+git push`
+
+> 必需在远程分支上先 pull 再 merge，禁止出现 Merge branch 'xxx' of ssh://...
+
+> 解决直接冲突问题后 continue 完成合并，逻辑冲突另提交 commit 审核
+
+> commit message 包含 PRD_Txxxx 标签名， 保留 Conflicts 冲突文件列表
+  Merge tag 'PRD_Txxxx' into FEATURE_T1234
+  Conflicts: path/to/file.java
+
+- 在 FEATURE 分支上打 PRD 标签
+`git tag PRD_T1234
+git push origin PRD_T1234`
+- 回归测试后，更新 mater 分支
+`git checkout master
+git merge PRD_T1234 --ff-only
+git push`
+
+> 若 master fast-forward 失败，表示有并发上线，沟通确认 master 上的最新 TAG 是否已完成上线
+切回 FEATURE 分支，合并最新的 PRD 标签，评估是否需要再次回归测试
+
+- 上线发布前检查
+`git log --pretty=oneline PRD_new..PRD_old                    // 是否有遗漏未合并的commit
+git log --pretty=oneline PRD_old..PRD_new | grep -v Merge    // 上线包含的commit，将结果评论至上线TASK`
+
+> 测试复核 PRD_old 是线上正在运行的版本，PRD_new = origin/master
+-----------------------------------------------------------------------
+
+-------------------------------------------------------第三部分------------------------------------------------------------
+# 安装 arc 
+Phabricator是一个代码审查管理，Arcanist是Phabricator配套的Code Review工具,需要配合本地git使用。
+##  1.确认PHP是否已经安装
+Mac OS X应该已经默认安装了PHP环境。在终端中输入php -v检查是否已安装了PHP环境。
+最新版php中有废弃的方法,arc不能正常运行，需要安装旧一些的版本。
+
+安装php7.3
+```
+brew reinstall php@7.3
+brew link php@7.3
+```
+过程中如果有失败，失败什么安装什么
+
+如果遇到错误：Error: php@7.3 has been disabled because it is a versioned formula!
+可以先尝试如下命令：
+```
+brew tap shivammathur/php
+brew install shivammathur/php/php@7.3
+过程中如果有失败，失败什么安装什么
+```
+执行完后再重新执行：
+```
+brew reinstall php@7.3
+brew link php@7.3
+```
+
+问题：
+
+Library not loaded: /opt/homebrew/opt/icu4c/lib/libicui18n.70.dylib
+解决办法：
+
+1. 执行命令 which brew 得到 brew安装目录 /opt/homebrew/bin/brew
+2. cd 到 /opt/homebrew
+3. cd 到 /Library/Taps/homebrew/homebrew-core/Formula
+4. 执行命令：git log --follow icu4c.rb
+5. 找到缺少的版本70对应的commit id
+6. 执行命令 git checkout -b icu4c-版本号 commitID
+7. 执行命令 brew reinstall ./icu4c.rb
+
+
+## 2.安装Arcanist
+在计划安装目录clone Arcanist代码仓库 
+ git clone https://github.com/phacility/libphutil.git 
+ git clone https://github.com/phacility/arcanist.git 
+
+然后将两个仓库均切换至 legacy-2019 分支
+
+##3.配置arc的环境变量 
+新系统的默认shell应该都是zsh，这里以zsh为例来讲述如何进行配置。
+```
+cd ~
+vi .zshrc
+```
+在配置文件的末尾加上这一句 
+```
+export PATH=${PATH}:/路径/arcanist/bin/ 
+```
+保存后退出VI。
+
+输入命令行：`source .zshrc` 更新环境变量。 
+
+然后输入命令：`arc –-help` 查看配置是否成功。
+
+## 4.设置Phabricator地址
+vi /路径/arcanist/.arcconfig ，将  "phabricator.uri": "https://secure.phabricator.com/", 改为  "phabricator.uri": "http://phabricator.huobidev.com/",
+
+配置项目 
+打开终端，切换到项目所在目录，运行`arc install-certificate`，按提示添加访问token 
+打开[[ http://phabricator.huobidev.com/conduit/login/ | token链接 ]]可以获取到token。
+
+在你的用户根目录下建立.arcrc文件。
+
+执行命令 `vi ~/.arcrc`，输入如下内容后保存（**注意需要替换成你获取到的token**）。
+
+
+```
+{
+  "config": {
+    "default": "http://phabricator.huobidev.com/",
+    "editor": "vim"
+  },
+  "hosts": {
+    "http://phabricator.huobidev.com/api/": {
+      "token": "cli-otp356fbifisk3qzfteudxz6ylre"
+    }
+  }
+}
+```
+
+## 5.代码审查流程 
+### 5.1创建diff，发送给reviewer去review
+命令为：`arc diff`
+
+在接下来的界面中，填写一些。规范可以参考：
+
+> 代码提交时，Lint结果状态必须为Lint OK。扫描出的问题需要即时修改后，再提交代码。
+Summary中必须附带任务号或者Bug号。 举例： [T68652] yeguolong: 去掉HUSD相关
+Test Plan需要写明测试影响范围，并跟测试说明。
+修复bug时，为了方便他人查阅代码变动历史，需要将Bug号或者任务号添加到代码注释中去。
+
+标题样式：
+
+<type>: <message>
+
+对格式的说明如下：
+
+type代表某次提交的类型，比如是修复一个bug还是增加一个新的feature。所有的type类型如下：
+feat： 新增feature
+fix: 修复bug
+docs: 仅仅修改了文档，比如README, CHANGELOG, CONTRIBUTE等等
+style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑
+refactor: 代码重构，没有加新功能或者修复bug
+perf: 优化相关，比如提升性能、体验
+test: 测试用例，包括单元测试、集成测试等
+chore: 改变构建流程、或者增加依赖库、工具等
+revert: 回滚到上一个版本
+
+message代表本次提交内容的描述，必须阐述清楚本次提交的详细变更。
+
+### 5.2 reviewer进行Code Review
+打开生成的diff链接，进行Review，可以在里面加上review意见。
+
+### 5.3developer根据意见更新代码
+更新代码后，再次运行`arc diff`，可以将diff进行更新。
+
+### 5.4developer上传代码
+注意，运行的命令是`arc land`，不是`git push`。
+
+

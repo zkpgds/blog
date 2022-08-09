@@ -13,5 +13,7 @@
 ## 最近更新
 - [git 使用规范](https://github.com/zkpgds/blog/issues/5)--2022-08-09
 - [博客终于弄好了~~~](https://github.com/zkpgds/blog/issues/4)--2022-08-03
+## 技术相关
+- [git 使用规范](https://github.com/zkpgds/blog/issues/5)--2022-08-09
 ## 日记
 - [博客终于弄好了~~~](https://github.com/zkpgds/blog/issues/4)--2022-08-03

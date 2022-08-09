@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-09T06:20:11.178050+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-09T06:20:11.425353+00:00</updated><content type="html"><![CDATA[<h2>git分支策略</h2>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-09T06:43:52.036092+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-09T06:43:52.250421+00:00</updated><content type="html"><![CDATA[<h1>Git 规范</h1>
+<h2>git分支策略</h2>
 <p><img src="https://user-images.githubusercontent.com/3361961/183578049-255fb33f-c4e2-44fa-865c-295fb91ecc96.png" alt="image" /></p>
 <h2>Git 开发流程规范（试用版）</h2>
 <p><code>为规范Git在版本控制方面的使用，引入工具git-flow进行分支管理</code></p>
@@ -105,5 +106,187 @@ git flow release track RELEASE_VERSION
 <h2>参考文档</h2>
 <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">Git Flow Cheatsheet</a>
 <a href="http://fann.im/blog/2012/03/12/git-flow-notes/">Git Flow 使用笔记</a></p>
-]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-09T06:20:11.575953+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
+<p>-------------------------------------------------------第二部分------------------------------------------------------------</p>
+<h1>一些git 命令</h1>
+<ul>
+<li>安装arc(不要使用中文)</li>
+<li>创建远程分支 FEATURE_Txxxx (默认基于 master)
+<code>git push origin master:FEATURE_T1234</code></li>
+<li>checkout 远程分支 FEATURE_Txxxx（不要在该分支上直接 commit）
+<code>git checkout --track origin/FEATURE_T1234</code></li>
+<li>checkout 本地开发分支 Txxxx
+<code>arc feature T1234 // git checkout -b T1234 FEATURE_T1234</code></li>
+</ul>
+<blockquote>
+<p>不要直接在远程分支上提交代码，使用本地分支 commit &amp; diff</p>
+</blockquote>
+<ul>
+<li>在开发分支上提交代码并提审
+<code>git commit -m &#x27;T1234 .... &#x27; arc diff HEAD^                        // 根据实际情况选择 commit id，默认是 parent</code></li>
+</ul>
+<blockquote>
+<p>commit message 以任务号开头，填具体修改内容摘要
+一个 task 可对应多个commit，不需要重复填写任务标题</p>
+</blockquote>
+<ul>
+<li>
+<p>根据审核意见修改代码后，更新diff
+<code>git commit --amend arc diff --update Dxxxxx</code></p>
+</li>
+<li>
+<p>审核代码通过后，将代码发布到远程分支
+<code>arc land --onto FEATURE_T1234</code></p>
+</li>
+<li>
+<p>打RC tag
+<code>git tag RC_T1234 git push origin RC_T1234</code></p>
+</li>
+<li>
+<p>测试过程中修复 bug，重复上述流程
+<code>git checkout -b T1235 FEATURE_T1234    // 使用BUG任务号 git commit -m &#x27;T1235 .... &#x27; arc diff HEAD^</code></p>
+</li>
+<li>
+<p>如果此处有update，要使用如下方法：
+<code>git commit --amend arc diff HEAD^</code></p>
+</li>
+<li>
+<p>如果已经accepted，需要land：
+<code>arc land --onto FEATURE_T1234 git tag RC_T1234_2 git push origin RC_T1234_2</code></p>
+</li>
+</ul>
+<blockquote>
+<p>使用BUG任务号提交 bugfix 作为关联，方便查看bug的修复方式</p>
+</blockquote>
+<ul>
+<li>测试通过后, 合并 master 分支上的最新 PRD 标签
+<code>git checkout FEATURE_T1234 git pull                     // 确认与远端同步 git log origin/master        // 确认最新的 PRD_Txxxx 标签 git merge PRD_Txxxx          // 使用标签而不是分支 git merge --continue git push</code></li>
+</ul>
+<blockquote>
+<p>必需在远程分支上先 pull 再 merge，禁止出现 Merge branch 'xxx' of ssh://...</p>
+</blockquote>
+<blockquote>
+<p>解决直接冲突问题后 continue 完成合并，逻辑冲突另提交 commit 审核</p>
+</blockquote>
+<blockquote>
+<p>commit message 包含 PRD_Txxxx 标签名， 保留 Conflicts 冲突文件列表
+Merge tag 'PRD_Txxxx' into FEATURE_T1234
+Conflicts: path/to/file.java</p>
+</blockquote>
+<ul>
+<li>在 FEATURE 分支上打 PRD 标签
+<code>git tag PRD_T1234 git push origin PRD_T1234</code></li>
+<li>回归测试后，更新 mater 分支
+<code>git checkout master git merge PRD_T1234 --ff-only git push</code></li>
+</ul>
+<blockquote>
+<p>若 master fast-forward 失败，表示有并发上线，沟通确认 master 上的最新 TAG 是否已完成上线
+切回 FEATURE 分支，合并最新的 PRD 标签，评估是否需要再次回归测试</p>
+</blockquote>
+<ul>
+<li>上线发布前检查
+<code>git log --pretty=oneline PRD_new..PRD_old                    // 是否有遗漏未合并的commit git log --pretty=oneline PRD_old..PRD_new | grep -v Merge    // 上线包含的commit，将结果评论至上线TASK</code></li>
+</ul>
+<blockquote>
+<p>测试复核 PRD_old 是线上正在运行的版本，PRD_new = origin/master</p>
+</blockquote>
+<hr />
+<p>-------------------------------------------------------第三部分------------------------------------------------------------</p>
+<h1>安装 arc</h1>
+<p>Phabricator是一个代码审查管理，Arcanist是Phabricator配套的Code Review工具,需要配合本地git使用。</p>
+<h2>1.确认PHP是否已经安装</h2>
+<p>Mac OS X应该已经默认安装了PHP环境。在终端中输入php -v检查是否已安装了PHP环境。
+最新版php中有废弃的方法,arc不能正常运行，需要安装旧一些的版本。</p>
+<p>安装php7.3</p>
+<pre><code>brew reinstall php@7.3
+brew link php@7.3
+</code></pre>
+<p>过程中如果有失败，失败什么安装什么</p>
+<p>如果遇到错误：Error: <a href="mailto:php@7.3">php@7.3</a> has been disabled because it is a versioned formula!
+可以先尝试如下命令：</p>
+<pre><code>brew tap shivammathur/php
+brew install shivammathur/php/php@7.3
+过程中如果有失败，失败什么安装什么
+</code></pre>
+<p>执行完后再重新执行：</p>
+<pre><code>brew reinstall php@7.3
+brew link php@7.3
+</code></pre>
+<p>问题：</p>
+<p>Library not loaded: /opt/homebrew/opt/icu4c/lib/libicui18n.70.dylib
+解决办法：</p>
+<ol>
+<li>执行命令 which brew 得到 brew安装目录 /opt/homebrew/bin/brew</li>
+<li>cd 到 /opt/homebrew</li>
+<li>cd 到 /Library/Taps/homebrew/homebrew-core/Formula</li>
+<li>执行命令：git log --follow icu4c.rb</li>
+<li>找到缺少的版本70对应的commit id</li>
+<li>执行命令 git checkout -b icu4c-版本号 commitID</li>
+<li>执行命令 brew reinstall ./icu4c.rb</li>
+</ol>
+<h2>2.安装Arcanist</h2>
+<p>在计划安装目录clone Arcanist代码仓库
+git clone <a href="https://github.com/phacility/libphutil.git">https://github.com/phacility/libphutil.git</a>
+git clone <a href="https://github.com/phacility/arcanist.git">https://github.com/phacility/arcanist.git</a> </p>
+<p>然后将两个仓库均切换至 legacy-2019 分支</p>
+<p>##3.配置arc的环境变量
+新系统的默认shell应该都是zsh，这里以zsh为例来讲述如何进行配置。</p>
+<pre><code>cd ~
+vi .zshrc
+</code></pre>
+<p>在配置文件的末尾加上这一句 </p>
+<pre><code>export PATH=${PATH}:/路径/arcanist/bin/ 
+</code></pre>
+<p>保存后退出VI。</p>
+<p>输入命令行：<code>source .zshrc</code> 更新环境变量。 </p>
+<p>然后输入命令：<code>arc –-help</code> 查看配置是否成功。</p>
+<h2>4.设置Phabricator地址</h2>
+<p>vi /路径/arcanist/.arcconfig ，将  &quot;phabricator.uri&quot;: &quot;https://secure.phabricator.com/&quot;, 改为  &quot;phabricator.uri&quot;: &quot;http://phabricator.huobidev.com/&quot;,</p>
+<p>配置项目
+打开终端，切换到项目所在目录，运行<code>arc install-certificate</code>，按提示添加访问token
+打开[[ <a href="http://phabricator.huobidev.com/conduit/login/">http://phabricator.huobidev.com/conduit/login/</a> | token链接 ]]可以获取到token。</p>
+<p>在你的用户根目录下建立.arcrc文件。</p>
+<p>执行命令 <code>vi ~/.arcrc</code>，输入如下内容后保存（<strong>注意需要替换成你获取到的token</strong>）。</p>
+<pre><code>{
+  &quot;config&quot;: {
+    &quot;default&quot;: &quot;http://phabricator.huobidev.com/&quot;,
+    &quot;editor&quot;: &quot;vim&quot;
+  },
+  &quot;hosts&quot;: {
+    &quot;http://phabricator.huobidev.com/api/&quot;: {
+      &quot;token&quot;: &quot;cli-otp356fbifisk3qzfteudxz6ylre&quot;
+    }
+  }
+}
+</code></pre>
+<h2>5.代码审查流程</h2>
+<h3>5.1创建diff，发送给reviewer去review</h3>
+<p>命令为：<code>arc diff</code></p>
+<p>在接下来的界面中，填写一些。规范可以参考：</p>
+<blockquote>
+<p>代码提交时，Lint结果状态必须为Lint OK。扫描出的问题需要即时修改后，再提交代码。
+Summary中必须附带任务号或者Bug号。 举例： [T68652] yeguolong: 去掉HUSD相关
+Test Plan需要写明测试影响范围，并跟测试说明。
+修复bug时，为了方便他人查阅代码变动历史，需要将Bug号或者任务号添加到代码注释中去。</p>
+</blockquote>
+<p>标题样式：</p>
+<p><type>: <message></p>
+<p>对格式的说明如下：</p>
+<p>type代表某次提交的类型，比如是修复一个bug还是增加一个新的feature。所有的type类型如下：
+feat： 新增feature
+fix: 修复bug
+docs: 仅仅修改了文档，比如README, CHANGELOG, CONTRIBUTE等等
+style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑
+refactor: 代码重构，没有加新功能或者修复bug
+perf: 优化相关，比如提升性能、体验
+test: 测试用例，包括单元测试、集成测试等
+chore: 改变构建流程、或者增加依赖库、工具等
+revert: 回滚到上一个版本</p>
+<p>message代表本次提交内容的描述，必须阐述清楚本次提交的详细变更。</p>
+<h3>5.2 reviewer进行Code Review</h3>
+<p>打开生成的diff链接，进行Review，可以在里面加上review意见。</p>
+<h3>5.3developer根据意见更新代码</h3>
+<p>更新代码后，再次运行<code>arc diff</code>，可以将diff进行更新。</p>
+<h3>5.4developer上传代码</h3>
+<p>注意，运行的命令是<code>arc land</code>，不是<code>git push</code>。</p>
+]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><category term="技术相关"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-09T06:43:52.439208+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
 ]]></content><link href="https://github.com/zkpgds/blog/issues/4" rel="alternate"/><category term="日记"/><published>2022-08-03T13:12:04+00:00</published></entry></feed>
