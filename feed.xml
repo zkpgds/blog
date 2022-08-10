@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-09T07:19:29.792610+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/6</id><title>安全运维规范</title><updated>2022-08-09T07:19:30.016493+00:00</updated><content type="html"><![CDATA[<p>=简介=
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/zkpgds/blog</id><title>RSS feed of zkpgds's blog</title><updated>2022-08-10T06:43:04.085725+00:00</updated><author><name>zkpgds</name><email>843328404@qq.com</email></author><link href="https://github.com/zkpgds/blog"/><link href="https://raw.githubusercontent.com/zkpgds/blog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><entry><id>https://github.com/zkpgds/blog/issues/6</id><title>安全运维规范</title><updated>2022-08-10T06:43:04.520019+00:00</updated><content type="html"><![CDATA[<p>=简介=
 为了保证生产系统运维工作安全高效的开展，特制定此安全运维规范，以便明确运维职责，标准化运维相关工作，统一运维操作，收敛运维风险敞口，降低安全风险，提高运维工作效率和质量。</p>
 <p>=通用规范=</p>
 <ul>
@@ -112,7 +112,7 @@
 | <strong>变更说明</strong>| 2019-01-1-11，安全与运维讨论创建|</p>
 <p>=参考资料=
 {F780080}</p>
-]]></content><link href="https://github.com/zkpgds/blog/issues/6" rel="alternate"/><published>2022-08-09T07:17:31+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-09T07:19:30.161383+00:00</updated><content type="html"><![CDATA[<h1>Git 规范</h1>
+]]></content><link href="https://github.com/zkpgds/blog/issues/6" rel="alternate"/><category term="技术相关"/><published>2022-08-09T07:17:31+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/5</id><title>git 使用规范</title><updated>2022-08-10T06:43:04.770229+00:00</updated><content type="html"><![CDATA[<h1>Git 规范</h1>
 <h2>git分支策略</h2>
 <p><img src="https://user-images.githubusercontent.com/3361961/183578049-255fb33f-c4e2-44fa-865c-295fb91ecc96.png" alt="image" /></p>
 <h2>Git 开发流程规范（试用版）</h2>
@@ -401,5 +401,5 @@ revert: 回滚到上一个版本</p>
 <p>更新代码后，再次运行<code>arc diff</code>，可以将diff进行更新。</p>
 <h3>5.4developer上传代码</h3>
 <p>注意，运行的命令是<code>arc land</code>，不是<code>git push</code>。</p>
-]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><category term="技术相关"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-09T07:19:30.314868+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
+]]></content><link href="https://github.com/zkpgds/blog/issues/5" rel="alternate"/><category term="技术相关"/><published>2022-08-09T06:18:12+00:00</published></entry><entry><id>https://github.com/zkpgds/blog/issues/4</id><title>博客终于弄好了~~~</title><updated>2022-08-10T06:43:05.025985+00:00</updated><content type="html"><![CDATA[<h5>很高兴终于把这个搞起来了，在这里要特别感谢我的前同事狗子哥，还专门写了一篇博客指导。未来日子里希望不偷懒，常常来这里记录生活点滴！</h5>
 ]]></content><link href="https://github.com/zkpgds/blog/issues/4" rel="alternate"/><category term="日记"/><published>2022-08-03T13:12:04+00:00</published></entry></feed>
